@@ -33,6 +33,13 @@ mongoose.connect(URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+// Middleware to log when someone reaches the specified endpoints
+app.use(['/api/formsubmission', '/api/forms'], (req, res, next) => {
+  console.log(`Reached endpoint: ${req.path}`);
+  next();
+});
+
 // this section for assignment given by progupta - START
 const FormSchema = new mongoose.Schema({
   name: String,
@@ -63,6 +70,7 @@ app.post('/api/formsubmission', async (req, res) => {
     res.status(500).json({ success: false, message: 'An error occurred while processing the form submission.' });
   }
 });
+
 // to give data of forms filled
 app.get('/api/forms', async (req, res) => {
   try {
